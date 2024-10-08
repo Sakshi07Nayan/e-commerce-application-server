@@ -31,26 +31,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-// const allowedOrigins = ['http://localhost:3000'];
+const allowedOrigins = ['http://localhost:3000'];
 
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     if (!origin) return callback(null, true);
-//     if (allowedOrigins.indexOf(origin) === -1) {
-//       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-//       return callback(new Error(msg), false);
-//     }
-//     return callback(null, true);
-//   },
-//   credentials: true, 
-// }));
 app.use(cors({
-  origin: [
-      'https://e-commerce-apllication-client.vercel.app', // Your deployed React app
-      'http://localhost:3000' // Allow local development as well
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true, // Include this if you're using credentials (like cookies)
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true, 
 }));
 
 app.use((req, res, next) => {
@@ -119,16 +111,6 @@ app.post('/api/users/login', async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
-  }
-});
-
-app.get('/api/users', async (req, res) => {
-  try {
-      const users = await pool.query('SELECT * FROM users'); // Fetch all users
-      res.json(users.rows); // Return users as JSON
-  } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server error');
   }
 });
   
