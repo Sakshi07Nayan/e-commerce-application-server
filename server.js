@@ -35,14 +35,15 @@ const allowedOrigins = ['http://localhost:3000', 'https://printer-e-commerce.onr
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true);  // Allow non-browser requests like Postman
-    if (allowedOrigins.indexOf(origin) === -1) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+      callback(new Error(msg), false);
     }
-    return callback(null, true);
   },
-  credentials: true, 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+  credentials: true,  // Allow cookies and other credentials to be sent
 }));
 
 app.use((req, res, next) => {
