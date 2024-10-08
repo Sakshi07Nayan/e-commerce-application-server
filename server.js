@@ -45,9 +45,12 @@ app.use(passport.session());
 //   credentials: true, 
 // }));
 app.use(cors({
-  origin: 'https://e-commerce-apllication-client.vercel.app',
+  origin: [
+      'https://e-commerce-apllication-client.vercel.app', // Your deployed React app
+      'http://localhost:3000' // Allow local development as well
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true, // Enable this if you're sending cookies or using sessions
+  credentials: true, // Include this if you're using credentials (like cookies)
 }));
 
 app.use((req, res, next) => {
