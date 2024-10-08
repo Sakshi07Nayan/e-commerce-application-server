@@ -113,6 +113,15 @@ app.post('/api/users/login', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+app.get('/api/users', async (req, res) => {
+  try {
+      const users = await pool.query('SELECT * FROM users'); // Fetch all users
+      res.json(users.rows); // Return users as JSON
+  } catch (err) {
+      console.error('Error fetching users:', err.message); // Log specific error message
+      res.status(500).json({ error: 'Server error', message: err.message });
+  }
+});
   
 
 passport.use(
