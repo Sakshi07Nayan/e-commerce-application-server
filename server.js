@@ -31,21 +31,25 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-const allowedOrigins = ['http://localhost:3000', 'https://printer-e-commerce.onrender.com'];
+// const allowedOrigins = ['http://localhost:3000', 'https://printer-e-commerce.onrender.com'];
 
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+//       callback(new Error(msg), false);
+//     }
+//   },
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+//   credentials: true,  // Allow cookies and other credentials to be sent
+// }));
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      callback(new Error(msg), false);
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
-  credentials: true,  // Allow cookies and other credentials to be sent
+  origin: '*', // Allow all origins (for testing purposes only)
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
 }));
-
 app.use((req, res, next) => {
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp'); // Optional: for additional security
